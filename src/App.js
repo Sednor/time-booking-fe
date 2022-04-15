@@ -1,24 +1,35 @@
-import logo from './logo.svg';
+import React from 'react';
+import { Route, Routes, Navigate } from 'react-router-dom';
+import createTheme from '@mui/material/styles/createTheme';
+import ThemeProvider from '@mui/material/styles/ThemeProvider';
+
+import BookPage from './pages/book/BookPage';
+import DBPage from './pages/db/DBPage';
+
+import routes from './constants/routes';
+
 import './App.css';
+
+const darkTheme = createTheme({
+  palette: {
+    mode: 'dark',
+  },
+});
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <ThemeProvider theme={darkTheme}>
+      <div className='app'>
+        <Routes>
+          <Route exact path={routes.BOOK} element={<BookPage/>}/>
+          <Route exact path={routes.DB} element={<DBPage/>}/>
+          <Route
+            path='*'
+            element={<Navigate to={routes.BOOK} replace/>}
+          />
+        </Routes>
+      </div>
+    </ThemeProvider>
   );
 }
 
