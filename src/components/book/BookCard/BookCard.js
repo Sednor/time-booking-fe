@@ -148,6 +148,7 @@ const BookCard = ({ onSubmit }) => {
               label='Date&Time picker'
               value={dateTime}
               onChange={handleDateChange}
+              minDateTime={new Date()}
               renderInput={(params) => <TextField {...params} />}
             />
           </LocalizationProvider>
