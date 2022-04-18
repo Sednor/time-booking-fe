@@ -1,4 +1,3 @@
 export const URLS = {
-  BOOK: '/book',
-  DB: '/db',
+  BOOK: '/email-notification-log',
 };

@@ -12,7 +12,6 @@ import { useNavigate } from 'react-router-dom';
 import { fetchData } from '../../services/dbService';
 import { formatDate } from '../../utils/formatters';
 import { calculateLeadQualityScore } from '../../utils/utils';
-import { DATA_MOCK } from '../../constants/data';
 import ROUTES from '../../constants/routes';
 
 import './DBPage.css';
@@ -20,10 +19,12 @@ import './DBPage.css';
 const DBPage = () => {
   const navigate = useNavigate();
 
-  const [data, setData] = useState(DATA_MOCK);
+  const [data, setData] = useState([]);
 
   useEffect(() => {
-    fetchData().then(res => setData(res));
+    fetchData().then(res => {
+      setData(res.content);
+    });
   }, []);
 
   const handleBackToBooking = () => {
@@ -32,18 +33,21 @@ const DBPage = () => {
 
   const renderRow = (item) => {
     return (
-      <TableRow key={item.email}>
+      <TableRow key={item.id}>
         <TableCell>
           {item.email}
         </TableCell>
         <TableCell>
-          {formatDate(item.date)}
+          {formatDate(item.createdDate)}
         </TableCell>
         <TableCell>
-          {item.services.join(', ')}
+          {formatDate(item.dateTime)}
         </TableCell>
         <TableCell>
-          {item.timeToComplete}s
+          {item.services.map(item => item.serviceName).join(', ')}
+        </TableCell>
+        <TableCell>
+          {item.time}s
         </TableCell>
         <TableCell>
           {calculateLeadQualityScore(item.timeToComplete)}
@@ -62,6 +66,7 @@ const DBPage = () => {
           <TableHead>
             <TableRow>
               <TableCell>Email</TableCell>
+              <TableCell>Created At</TableCell>
               <TableCell>Date / Time</TableCell>
               <TableCell>Services</TableCell>
               <TableCell>Time to Complete</TableCell>

@@ -23,14 +23,14 @@ const BookSuccessCard = ({ data, onBookMore, onViewAll }) => {
     return (
       <>
         <Typography>
-          You have successfully booked for <b>{formatDate(data.date)}</b> the following services:
+          You have successfully booked for <b>{formatDate(data.dateTime)}</b> the following services:
         </Typography>
         <List>
           {
             data.services.map(service => (
               <ListItem>
                 <Typography>
-                  {service}
+                  {service.serviceName}
                 </Typography>
               </ListItem>
             ))

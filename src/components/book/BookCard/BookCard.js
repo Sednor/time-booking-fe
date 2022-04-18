@@ -91,9 +91,9 @@ const BookCard = ({ onSubmit }) => {
     const timeToComplete = calculateTimeToComplete();
     const data = {
       email,
-      date: dateTime.getTime(),
-      services,
-      timeToComplete,
+      dateTime: dateTime.toISOString(),
+      services: services.map(item => ({ serviceName: item })),
+      time: timeToComplete,
     };
     onSubmit(data);
   };
