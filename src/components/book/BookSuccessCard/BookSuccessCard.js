@@ -23,7 +23,7 @@ const BookSuccessCard = ({ data, onBookMore, onViewAll }) => {
     return (
       <>
         <Typography>
-          You have successfully booked for <b>{formatDate(data.dateTime)}</b> the following services:
+          You have successfully booked for <b>{formatDate(data.dateTime, false)}</b> the following services:
         </Typography>
         <List>
           {
