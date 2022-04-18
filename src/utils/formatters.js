@@ -7,5 +7,6 @@ export const formatDate = (date) => {
     return '';
   }
 
-  return moment(date).local().format(DATE_FORMAT);
+  const timezoneOffset = new Date().getTimezoneOffset();
+  return moment(date).subtract(timezoneOffset, 'm').format(DATE_FORMAT);
 };
