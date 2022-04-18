@@ -23,7 +23,7 @@ const BookSuccessCard = ({ data, onBookMore, onViewAll }) => {
     return (
       <>
         <Typography>
-          You have successfully booked for <b>{formatDate(data.dateTime)}</b> the following services:
+          You have successfully booked for <b>{formatDate(data.date)}</b> the following services:
         </Typography>
         <List>
           {
@@ -36,6 +36,9 @@ const BookSuccessCard = ({ data, onBookMore, onViewAll }) => {
             ))
           }
         </List>
+        <Typography>
+          Confirmation has been sent to <b>{data.email}</b>
+        </Typography>
       </>
     );
   };

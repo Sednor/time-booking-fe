@@ -25,7 +25,7 @@ const BookPage = () => {
     setBookingData(data);
 
     try {
-      await book(data);
+      // await book(data);
       setBookingStage(BOOKING_STAGES.COMPLETED);
     } catch (e) {
       console.error(e);
