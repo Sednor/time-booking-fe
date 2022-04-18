@@ -4,8 +4,3 @@
     align-items: center;
     justify-content: center;
 }
-
-.card-content {
-    display: flex;
-    flex-direction: column;
-}

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import TextField from '@mui/material/TextField';
@@ -14,16 +14,14 @@ import Chip from '@mui/material/Chip';
 import useTheme from '@mui/material/styles/useTheme';
 import CardActions from '@mui/material/CardActions';
 import Button from '@mui/material/Button';
+import Stack from '@mui/material/Stack';
+import CardHeader from '@mui/material/CardHeader';
+
+import { validateEmail } from '../../utils/validators';
+import { SERVICES } from '../../constants/data';
 
 import './BookPage.css';
-
-const servicesList = [
-  'Service A',
-  'Service B',
-  'Service C',
-  'Service D',
-  'Service E',
-];
+import FormHelperText from '@mui/material/FormHelperText';
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -36,79 +34,153 @@ const MenuProps = {
   },
 };
 
-function getStyles(name, service, theme) {
-  return {
-    fontWeight:
-      service.indexOf(name) === -1
-        ? theme.typography.fontWeightRegular
-        : theme.typography.fontWeightMedium,
-  };
-}
-
 const BookPage = () => {
   const theme = useTheme();
 
-  const [value, setValue] = React.useState(new Date('2014-08-18T21:11:54'));
-  const [services, setServices] = React.useState([]);
+  const [email, setEmail] = useState('');
+  const [dateTime, setDateTime] = useState(new Date());
+  const [services, setServices] = useState([]);
 
-  const handleDateChange = (newValue) => {
-    setValue(newValue);
+  const [emailError, setEmailError] = useState('');
+  const [serviceError, setServiceError] = useState('');
+
+  const handleEmailChange = (e) => {
+    setEmail(e.target.value);
   };
 
-  const handleServiceChange = (event) => {
+  const handleDateChange = (value) => {
+    setDateTime(value);
+  };
+
+  const handleServiceChange = (e) => {
     const {
       target: { value },
-    } = event;
+    } = e;
     setServices(
       typeof value === 'string' ? value.split(',') : value,
     );
   };
 
+  const validate = () => {
+    let isValid = true;
+
+    if (!email || !validateEmail(email)) {
+      setEmailError('Please enter a valid email address');
+      isValid = false;
+    } else {
+      setEmailError('');
+    }
+
+    if (!services || !services.length) {
+      setServiceError('Please select at least one service');
+      isValid = false;
+    } else {
+      setServiceError('');
+    }
+
+    return isValid;
+  };
+
+  const handleSubmit = () => {
+    const isValid = validate();
+
+    if (!isValid) {
+      return;
+    }
+
+    const data = {
+      email,
+      dateTime,
+      services,
+    };
+    console.log(data);
+  };
+
+  const renderChip = (item) => {
+    return (
+      <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
+        {item.map((value) => (
+          <Chip
+            key={value}
+            label={value}
+            size='small'
+          />
+        ))}
+      </Box>
+    );
+  };
+
+  const renderServiceItem = (serviceName) => {
+    const style = {
+      fontWeight:
+        services.indexOf(serviceName) === -1
+          ? theme.typography.fontWeightRegular
+          : theme.typography.fontWeightMedium,
+    };
+
+    return (
+      <MenuItem
+        key={serviceName}
+        value={serviceName}
+        style={style}
+      >
+        {serviceName}
+      </MenuItem>
+    );
+  };
+
   return (
     <div className='book-page'>
-      <Card sx={{ minWidth: 400 }}>
+      <Card sx={{ width: 400 }}>
+        <CardHeader
+          title='Time Booking'
+          subheader='Book time & service'
+        />
         <CardContent>
-          <div className='card-content'>
-            <TextField label='Email' variant='outlined'/>
+          <Stack direction='column' spacing={3}>
+            <TextField
+              label='Email'
+              variant='outlined'
+              value={email}
+              onChange={handleEmailChange}
+              error={!!emailError}
+              helperText={emailError}
+            />
             <LocalizationProvider dateAdapter={AdapterDateFns}>
               <DateTimePicker
                 label='Date&Time picker'
-                value={value}
+                value={dateTime}
                 onChange={handleDateChange}
                 renderInput={(params) => <TextField {...params} />}
               />
             </LocalizationProvider>
-            <FormControl sx={{ m: 1, width: 300 }}>
-              <InputLabel>Chip</InputLabel>
+            <FormControl error={!!serviceError}>
+              <InputLabel>Service</InputLabel>
               <Select
                 multiple
                 value={services}
                 onChange={handleServiceChange}
-                input={<OutlinedInput label='Chip'/>}
-                renderValue={(selected) => (
-                  <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
-                    {selected.map((value) => (
-                      <Chip key={value} label={value}/>
-                    ))}
-                  </Box>
-                )}
+                input={<OutlinedInput label='Service'/>}
+                renderValue={(item) => renderChip(item)}
                 MenuProps={MenuProps}
               >
-                {servicesList.map((name) => (
-                  <MenuItem
-                    key={name}
-                    value={name}
-                    style={getStyles(name, services, theme)}
-                  >
-                    {name}
-                  </MenuItem>
-                ))}
+                {SERVICES.map((name) => renderServiceItem(name))}
               </Select>
+              {
+                !!serviceError && (
+                  <FormHelperText error>{serviceError}</FormHelperText>
+                )
+              }
             </FormControl>
-          </div>
+          </Stack>
         </CardContent>
-        <CardActions>
-          <Button>Submit</Button>
+        <CardActions sx={{ flexDirection: 'row-reverse', padding: '16px' }}>
+          <Button
+            onClick={handleSubmit}
+            variant='outlined'
+          >
+            Submit
+          </Button>
         </CardActions>
       </Card>
     </div>
