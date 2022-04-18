@@ -23,7 +23,7 @@ const DBPage = () => {
 
   useEffect(() => {
     fetchData().then(res => {
-      setData(res.content);
+      setData(res.data.content);
     });
   }, []);
 
@@ -50,7 +50,7 @@ const DBPage = () => {
           {item.time}s
         </TableCell>
         <TableCell>
-          {calculateLeadQualityScore(item.timeToComplete)}
+          {calculateLeadQualityScore(item.time)}
         </TableCell>
       </TableRow>
     );
