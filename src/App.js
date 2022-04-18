@@ -6,7 +6,7 @@ import ThemeProvider from '@mui/material/styles/ThemeProvider';
 import BookPage from './pages/book/BookPage';
 import DBPage from './pages/db/DBPage';
 
-import routes from './constants/routes';
+import ROUTES from './constants/routes';
 
 import './App.css';
 
@@ -21,11 +21,11 @@ function App() {
     <ThemeProvider theme={darkTheme}>
       <div className='app'>
         <Routes>
-          <Route exact path={routes.BOOK} element={<BookPage/>}/>
-          <Route exact path={routes.DB} element={<DBPage/>}/>
+          <Route exact path={ROUTES.BOOK} element={<BookPage/>}/>
+          <Route exact path={ROUTES.DB} element={<DBPage/>}/>
           <Route
             path='*'
-            element={<Navigate to={routes.BOOK} replace/>}
+            element={<Navigate to={ROUTES.BOOK} replace/>}
           />
         </Routes>
       </div>

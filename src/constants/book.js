@@ -1,0 +1,5 @@
+export const BOOKING_STAGES = {
+  INITIAL: 'INITIAL',
+  LOADING: 'LOADING',
+  COMPLETED: 'COMPLETED',
+};

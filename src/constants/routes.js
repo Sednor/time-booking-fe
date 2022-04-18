@@ -1,6 +1,6 @@
-const routes = {
+const ROUTES = {
   BOOK: '/',
   DB: '/db',
 };
 
-export default routes;
+export default ROUTES;
