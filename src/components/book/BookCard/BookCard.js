@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import moment from 'moment';
 import CardHeader from '@mui/material/CardHeader';
 import CardContent from '@mui/material/CardContent';
 import Stack from '@mui/material/Stack';
@@ -36,11 +37,12 @@ const BookCard = ({ onSubmit }) => {
   const theme = useTheme();
 
   const [email, setEmail] = useState('');
-  const [dateTime, setDateTime] = useState(new Date());
+  const [dateTime, setDateTime] = useState(moment().add(10, 'm').toDate());
   const [services, setServices] = useState([]);
 
   const [emailError, setEmailError] = useState('');
   const [serviceError, setServiceError] = useState('');
+  const [startTime, setStartTime] = useState(new Date().getTime());
 
   const handleEmailChange = (e) => {
     setEmail(e.target.value);
@@ -86,12 +88,19 @@ const BookCard = ({ onSubmit }) => {
       return;
     }
 
+    const timeToComplete = calculateTimeToComplete();
     const data = {
       email,
       date: dateTime.getTime(),
       services,
+      timeToComplete,
     };
     onSubmit(data);
+  };
+
+  const calculateTimeToComplete = () => {
+    const now = new Date().getTime();
+    return Math.round((now - startTime) / 1000);
   };
 
   const renderChip = (item) => {

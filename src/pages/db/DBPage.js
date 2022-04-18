@@ -11,6 +11,7 @@ import { useNavigate } from 'react-router-dom';
 
 import { fetchData } from '../../services/dbService';
 import { formatDate } from '../../utils/formatters';
+import { calculateLeadQualityScore } from '../../utils/utils';
 import { DATA_MOCK } from '../../constants/data';
 import ROUTES from '../../constants/routes';
 
@@ -41,6 +42,12 @@ const DBPage = () => {
         <TableCell>
           {item.services.join(', ')}
         </TableCell>
+        <TableCell>
+          {item.timeToComplete}s
+        </TableCell>
+        <TableCell>
+          {calculateLeadQualityScore(item.timeToComplete)}
+        </TableCell>
       </TableRow>
     );
   };
@@ -57,6 +64,8 @@ const DBPage = () => {
               <TableCell>Email</TableCell>
               <TableCell>Date / Time</TableCell>
               <TableCell>Services</TableCell>
+              <TableCell>Time to Complete</TableCell>
+              <TableCell>LQS</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
