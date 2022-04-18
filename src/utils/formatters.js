@@ -7,5 +7,5 @@ export const formatDate = (date) => {
     return '';
   }
 
-  return moment(date).format(DATE_FORMAT);
+  return moment(date).local().format(DATE_FORMAT);
 };
